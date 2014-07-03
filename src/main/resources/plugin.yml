@@ -1,0 +1,3 @@
+name: dippoakabob-t3
+main: com.tenjava.entries.dippoakabob.t3.TenJava
+version: '${project.version}'
