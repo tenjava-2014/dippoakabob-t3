@@ -1,7 +1,6 @@
 package com.tenjava.entries.dippoakabob.t3;
 
 import com.tenjava.entries.dippoakabob.t3.apocalypse.ApocalypseManager;
-import com.tenjava.entries.dippoakabob.t3.apocalypse.commands.StartCommand;
 import com.tenjava.entries.dippoakabob.t3.apocalypse.events.Lightning;
 import com.tenjava.entries.dippoakabob.t3.apocalypse.events.Meteor;
 import com.tenjava.entries.dippoakabob.t3.apocalypse.events.MobSpawning;
@@ -9,6 +8,8 @@ import com.tenjava.entries.dippoakabob.t3.apocalypse.events.Terrain;
 import com.tenjava.entries.dippoakabob.t3.events.JoinLeaveListeners;
 import com.tenjava.entries.dippoakabob.t3.events.WaterListener;
 import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -20,7 +21,7 @@ public class TenJava extends JavaPlugin {
 
 	private static Random random = new Random();
 
-	public void onEnable(){
+	public void onEnable() {
 		instance = this;
 
 		//Register Events
@@ -36,23 +37,33 @@ public class TenJava extends JavaPlugin {
 		ApocalypseManager.addEvent(new Terrain(), true);
 		ApocalypseManager.addEvent(new MobSpawning(), true);
 
-		//Commands
-		getCommand("start").setExecutor(new StartCommand());
-
 		//Begin running apocalypse timers and so on
 		ApocalypseManager.init();
 	}
 
 
-	public void onDisable(){
+	public void onDisable() {
 
 	}
 
-	public static Random getRandom(){
+	@Override
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		if (label.equalsIgnoreCase("start")) {
+			if (!ApocalypseManager.hasStarted()) {
+				sender.sendMessage("Starting the Apocalypse!");
+				ApocalypseManager.start();
+			} else {
+				sender.sendMessage("The Apocalypse has already started.");
+			}
+		}
+		return true;
+	}
+
+	public static Random getRandom() {
 		return random;
 	}
 
-	public static TenJava getInstance(){
+	public static TenJava getInstance() {
 		return instance;
 	}
 

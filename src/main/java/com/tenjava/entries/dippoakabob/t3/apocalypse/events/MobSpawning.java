@@ -12,7 +12,7 @@ import org.bukkit.scheduler.BukkitRunnable;
  */
 public class MobSpawning extends ApocalypseEvent {
 
-	private static final int MOB_CHANCE = 50;
+	private static final int MOB_CHANCE = 400;
 
 	public MobSpawning() {
 		super("Mob Spawning", "Handles extra mob spawning.");
@@ -38,7 +38,7 @@ public class MobSpawning extends ApocalypseEvent {
 					}
 				}
 			}
-		}.runTaskTimer(TenJava.getInstance(), 0L, 20L);
+		}.runTaskTimer(TenJava.getInstance(), 0L, 100L);
 
 	}
 }
