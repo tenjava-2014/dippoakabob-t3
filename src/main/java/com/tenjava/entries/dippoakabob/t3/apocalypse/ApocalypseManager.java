@@ -35,7 +35,7 @@ public class ApocalypseManager {
 	public static void init() {
 
 		days = 1;
-		startingTicks = days * 24000;
+		startingTicks = days * 19200;
 
 		new BukkitRunnable() {
 

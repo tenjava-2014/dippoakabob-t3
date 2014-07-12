@@ -90,8 +90,10 @@ public class Meteor extends ApocalypseEvent {
 			event.setCancelled(true);
 
 			if(event.getBlock().getType() == Material.AIR){
+				//Creates an explosion for the meteor
 				event.getBlock().getLocation().getWorld().createExplosion(event.getBlock().getLocation(), 8F, true);
 
+				//Removes other parts of the meteor
 				for(String name : blocks.keySet()){
 					if(blocks.get(name).contains(event.getEntity())){
 						for(FallingBlock block : blocks.get(name)){

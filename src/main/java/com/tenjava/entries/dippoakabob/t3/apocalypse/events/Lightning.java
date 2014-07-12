@@ -24,9 +24,10 @@ public class Lightning extends ApocalypseEvent {
 	@Override
 	public void play(Location location, int radius) {
 		for(Player player : Bukkit.getOnlinePlayers()){
-
+			//gets the location to strike
 			Location loc = player.getLocation().clone().add(random.nextInt(PLAYER_RADIUS*2) - PLAYER_RADIUS, 0, random.nextInt(PLAYER_RADIUS*2) - PLAYER_RADIUS);
 
+			//strikes lightning
 			loc.getWorld().strikeLightning(loc.getWorld().getHighestBlockAt(loc).getLocation());
 
 		}
