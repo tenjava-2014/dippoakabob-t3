@@ -50,6 +50,7 @@ public class ApocalypseManager {
 
 				if(remaining <= 0){
 					startApocalypse();
+					this.cancel();
 				}else if(remaining == 20 //1 second
 						|| remaining == 40 //2 second
 						|| remaining == 60 //3 second
@@ -69,6 +70,10 @@ public class ApocalypseManager {
 		startLocation = new Location(Bukkit.getWorlds().get(0), 0, 0, 0);
 
 		TenJava.getInstance().getConfig().set("apocalypse.started", true);
+		TenJava.getInstance().saveConfig();
+
+		Bukkit.broadcastMessage(ChatColor.DARK_RED + "Starting the Apocalypse!");
+		Bukkit.broadcastMessage(ChatColor.RED + "Starting at " + startLocation.getX() + "x " + startLocation.getZ() + "z");
 
 		for(ApocalypseEvent staticEvent : staticEvents){
 			staticEvent.play(startLocation, radius);
