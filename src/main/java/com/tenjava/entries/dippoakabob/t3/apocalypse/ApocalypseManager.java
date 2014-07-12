@@ -33,7 +33,8 @@ public class ApocalypseManager {
 	 * Starts timers and such for playing events.
 	 */
 	public static void init(){
-		days = random.nextInt(3) + 2;
+		//days = random.nextInt(3) + 2;
+		days = 0;
 
 		new BukkitRunnable() {
 			@Override
@@ -56,10 +57,19 @@ public class ApocalypseManager {
 			public void run() {
 
 				if(random.nextInt(EVENT_CHANCE) == 0){
-					getRandomEvent().play(startLocation, radius);
+					playRandomEvent();
 				}
 			}
 		}.runTaskTimer(TenJava.getInstance(), 0, 20);
+	}
+
+	private static void playRandomEvent() {
+		ApocalypseEvent event = getRandomEvent();
+
+		if(event != null){
+			Bukkit.getLogger().info("Starting running the ApocalypseEvent \"" + event.getName() + "\"" );
+			event.play(startLocation, radius);
+		}
 	}
 
 	public static void addEvent(ApocalypseEvent event){
@@ -77,12 +87,14 @@ public class ApocalypseManager {
 			total += event.getRarity();
 		}
 
-		int select = random.nextInt(total);
+		if(total > 0){
+			int select = random.nextInt(total);
 
-		for(ApocalypseEvent event : events){
-			select -= event.getRarity();
-			if(select <= 0){
-				return event;
+			for(ApocalypseEvent event : events){
+				select -= event.getRarity();
+				if(select <= 0){
+					return event;
+				}
 			}
 		}
 		return null;

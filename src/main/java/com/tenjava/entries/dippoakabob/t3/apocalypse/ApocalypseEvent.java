@@ -30,6 +30,14 @@ public abstract class ApocalypseEvent {
 		return rarity == 0;
 	}
 
+	public String getName(){
+		return name;
+	}
+
+	public String getDescription(){
+		return description;
+	}
+
 	public double getRarity(){
 		return rarity;
 	}
