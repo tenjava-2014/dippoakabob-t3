@@ -8,7 +8,7 @@ import org.bukkit.event.Listener;
  *
  *
  */
-public abstract class ApocalypseEvent {
+public abstract class ApocalypseEvent implements Listener {
 
 	private String name;
 	private String description;

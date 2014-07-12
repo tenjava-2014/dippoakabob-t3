@@ -15,8 +15,9 @@ import org.bukkit.scheduler.BukkitRunnable;
  */
 public class Terrain extends ApocalypseEvent {
 
-	private static final int FLAME_AMOUNT = 3;
-	private static final int GRASS_RADIUS_CHANCE = 3;
+	private static final int FLAME_AMOUNT = 12;
+	private static final int BORDER_RADIUS_CHANCE = 2;
+	private static final int GRASS_RADIUS_CHANCE = 5;
 	private static final int GRASS_CHANCE = 10;
 
 	private static final int MAX_RADUIS = 200;
@@ -38,7 +39,7 @@ public class Terrain extends ApocalypseEvent {
 			@Override
 			public void run() {
 				//Looping through a boarder
-				if(borderRadius >= MAX_RADUIS){
+				if(borderRadius <= MAX_RADUIS){
 					for(int x = -borderRadius; x <= borderRadius; x++) {
 						for (int z = -borderRadius; z <= borderRadius; z++) {
 							Location loc = new Location(location.getWorld(),
@@ -68,39 +69,43 @@ public class Terrain extends ApocalypseEvent {
 							}
 						}
 					}
-					borderRadius += 1;
+					if(TenJava.getRandom().nextInt(BORDER_RADIUS_CHANCE) == 0){
+						borderRadius += 1;
+					}
 				}
 
 				//Loop through blocks slower to change top terrain type
-				if(grassRadius >= MAX_RADUIS){
+				if(grassRadius <= MAX_RADUIS){
 
 					for(int x = -grassRadius; x <= grassRadius; x++) {
 						for (int z = -grassRadius; z <= grassRadius; z++) {
-							Location loc = new Location(location.getWorld(),
-								location.getX() + x,
-								location.getY(),
-								location.getZ() + z);
+							for (int y = 0; y <= 256; y++) {
+								Location loc = new Location(location.getWorld(),
+									location.getX() + x,
+									y,
+									location.getZ() + z);
 
-							Block block = loc.getWorld().getHighestBlockAt(loc);
+								Block block = loc.getBlock();
 
-							if(block.getType() == Material.GRASS){
+								if(block.getType() == Material.GRASS){
 
-								//Don't change all the blocks, just a random amount
-								if(TenJava.getRandom().nextInt(GRASS_CHANCE) == 0){
-									block.setType(Material.DIRT);
+									//Don't change all the blocks, just a random amount
+									if(TenJava.getRandom().nextInt(GRASS_CHANCE) == 0){
+										block.setType(Material.DIRT);
 
-									if(TenJava.getRandom().nextBoolean()){
-										block.setData((byte) 0);
-									}else{
-										block.setData((byte) 2);
+										if(TenJava.getRandom().nextBoolean()){
+											block.setData((byte) 0);
+										}else{
+											block.setData((byte) 2);
+										}
 									}
 								}
 							}
 						}
 					}
-				}
-				if(TenJava.getRandom().nextInt(GRASS_RADIUS_CHANCE) == 0){
-					grassRadius += 1;
+					if(TenJava.getRandom().nextInt(GRASS_RADIUS_CHANCE) == 0){
+						grassRadius += 1;
+					}
 				}
 
 			}

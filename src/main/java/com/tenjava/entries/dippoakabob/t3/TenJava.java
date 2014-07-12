@@ -1,8 +1,8 @@
 package com.tenjava.entries.dippoakabob.t3;
 
 import com.tenjava.entries.dippoakabob.t3.apocalypse.ApocalypseManager;
+import com.tenjava.entries.dippoakabob.t3.apocalypse.events.Meteor;
 import com.tenjava.entries.dippoakabob.t3.apocalypse.events.Terrain;
-import com.tenjava.entries.dippoakabob.t3.apocalypse.events.Testing;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Random;
@@ -17,7 +17,7 @@ public class TenJava extends JavaPlugin {
 		instance = this;
 
 		//Adding Apocalypse Events
-		ApocalypseManager.addEvent(new Testing());
+		ApocalypseManager.addEvent(new Meteor());
 
 		//Adding Static Apocalypse Events
 		ApocalypseManager.addEvent(new Terrain(), true);

@@ -113,6 +113,8 @@ public class ApocalypseManager {
 		}else{
 			events.add(event);
 		}
+
+		Bukkit.getPluginManager().registerEvents(event, TenJava.getInstance());
 	}
 
 	private static ApocalypseEvent getRandomEvent() {
