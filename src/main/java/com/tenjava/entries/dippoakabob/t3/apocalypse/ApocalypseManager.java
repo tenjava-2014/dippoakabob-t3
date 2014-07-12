@@ -11,8 +11,6 @@ import java.util.List;
 
 /**
  * Created by dippoakabob.
- *
- *
  */
 public class ApocalypseManager {
 
@@ -34,35 +32,34 @@ public class ApocalypseManager {
 	/**
 	 * Starts timers and such for playing events.
 	 */
-	public static void init(){
+	public static void init() {
 
-		//days = random.nextInt(3) + 2;
-		//startingTicks = days * 24000;
-
-		startingTicks = 400;
+		days = TenJava.getRandom().nextInt(2) + 1;
+		startingTicks = days * 24000;
 
 		new BukkitRunnable() {
 
 			@Override
 			public void run() {
-				ticksElapsed += 20;
-				long remaining = startingTicks - ticksElapsed;
+				if (hasJoined) {
+					ticksElapsed += 20;
+					long remaining = startingTicks - ticksElapsed;
 
-				if(remaining <= 0 || started){
-					startApocalypse();
-					this.cancel();
-				}else if((remaining <= 100 && remaining % 20 == 0) //5 second
-						|| remaining == 200 //10 second
-						|| remaining == 300){ //15 second
-					Bukkit.broadcastMessage(ChatColor.RED + "The apocalypse is starting in " + (remaining/20) + " second" + ((remaining/20 == 1) ? "":"s" + "!"));
+					if (remaining <= 0 || started) {
+						startApocalypse();
+						this.cancel();
+					} else if ((remaining <= 100 && remaining % 20 == 0) //5 second
+							|| remaining == 200 //10 second
+							|| remaining == 300){ //15 second
+						Bukkit.broadcastMessage(ChatColor.RED + "The apocalypse is starting in " + (remaining / 20) + " second" + ((remaining / 20 == 1) ? "" : "s" + "!"));
+					}
 				}
-
 			}
 
 		}.runTaskTimer(TenJava.getInstance(), 0, 20);
 	}
 
-	public static void startApocalypse(){
+	public static void startApocalypse() {
 		startLocation = generateStartLocation();
 
 		started = true;
@@ -70,18 +67,19 @@ public class ApocalypseManager {
 		TenJava.getInstance().getConfig().set("apocalypse.started", true);
 		TenJava.getInstance().saveConfig();
 
-		Bukkit.broadcastMessage(ChatColor.RED + "The Apocalypse has begun!");
+		Bukkit.broadcastMessage(ChatColor.RED + "The Apocalypse is starting!\n" +
+				ChatColor.GRAY + "Try your best to survive! Be careful!");
 
-		for(ApocalypseEvent staticEvent : staticEvents){
+		for (ApocalypseEvent staticEvent : staticEvents) {
 			staticEvent.play(startLocation, radius);
 		}
 
-		new BukkitRunnable(){
+		new BukkitRunnable() {
 
 			@Override
 			public void run() {
 
-				if(TenJava.getRandom().nextInt(EVENT_CHANCE) == 0){
+				if (TenJava.getRandom().nextInt(EVENT_CHANCE) == 0) {
 					playRandomEvent();
 				}
 
@@ -94,20 +92,20 @@ public class ApocalypseManager {
 	private static void playRandomEvent() {
 		ApocalypseEvent event = getRandomEvent();
 
-		if(event != null){
-			Bukkit.getLogger().info("Starting running the ApocalypseEvent \"" + event.getName() + "\"" );
+		if (event != null) {
+			Bukkit.getLogger().info("Starting running the ApocalypseEvent \"" + event.getName() + "\"");
 			event.play(startLocation, radius);
 		}
 	}
 
-	public static void addEvent(ApocalypseEvent event){
+	public static void addEvent(ApocalypseEvent event) {
 		addEvent(event, false);
 	}
 
-	public static void addEvent(ApocalypseEvent event, boolean isStatic){
-		if(isStatic){
+	public static void addEvent(ApocalypseEvent event, boolean isStatic) {
+		if (isStatic) {
 			staticEvents.add(event);
-		}else{
+		} else {
 			events.add(event);
 		}
 
@@ -117,16 +115,16 @@ public class ApocalypseManager {
 	private static ApocalypseEvent getRandomEvent() {
 		int total = 0;
 
-		for(ApocalypseEvent event : events){
+		for (ApocalypseEvent event : events) {
 			total += event.getRarity();
 		}
 
-		if(total > 0){
+		if (total > 0) {
 			int select = TenJava.getRandom().nextInt(total);
 
-			for(ApocalypseEvent event : events){
+			for (ApocalypseEvent event : events) {
 				select -= event.getRarity();
-				if(select <= 0){
+				if (select <= 0) {
 					return event;
 				}
 			}
@@ -134,39 +132,43 @@ public class ApocalypseManager {
 		return null;
 	}
 
-	public static Location generateStartLocation(){
+	public static Location generateStartLocation() {
 		Location loc;
 
-		if(Bukkit.getOnlinePlayers().length > 0){
+		if (Bukkit.getOnlinePlayers().length > 0) {
 			loc = Bukkit.getOnlinePlayers()[TenJava.getRandom().nextInt(Bukkit.getOnlinePlayers().length)].getLocation();
 
-		}else{
+		} else {
 			loc = Bukkit.getWorlds().get(0).getSpawnLocation();
 		}
 		return loc.getBlock().getLocation();
 	}
 
-	public static Long getTicksRemaining(){
+	public static Long getTicksRemaining() {
 		return startingTicks - ticksElapsed;
 	}
 
-	public static List<ApocalypseEvent> getEvents(){
+	public static List<ApocalypseEvent> getEvents() {
 		return events;
 	}
 
-	public static List<ApocalypseEvent> getStaticEvents(){
+	public static List<ApocalypseEvent> getStaticEvents() {
 		return staticEvents;
 	}
 
-	public static long getStartingTicks(){
+	public static long getStartingTicks() {
 		return startingTicks;
 	}
 
-	public static boolean hasStarted(){
+	public static void start(){
+		started = true;
+	}
+
+	public static boolean hasStarted() {
 		return started;
 	}
 
-	public static void playerJoined(){
+	public static void playerJoined() {
 		hasJoined = true;
 	}
 

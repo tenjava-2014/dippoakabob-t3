@@ -1,6 +1,7 @@
 package com.tenjava.entries.dippoakabob.t3;
 
 import com.tenjava.entries.dippoakabob.t3.apocalypse.ApocalypseManager;
+import com.tenjava.entries.dippoakabob.t3.apocalypse.commands.StartCommand;
 import com.tenjava.entries.dippoakabob.t3.apocalypse.events.Lightning;
 import com.tenjava.entries.dippoakabob.t3.apocalypse.events.Meteor;
 import com.tenjava.entries.dippoakabob.t3.apocalypse.events.Terrain;
@@ -32,6 +33,9 @@ public class TenJava extends JavaPlugin {
 
 		//Adding Static Apocalypse Events
 		ApocalypseManager.addEvent(new Terrain(), true);
+
+		//Commands
+		getCommand("start").setExecutor(new StartCommand());
 
 		//Begin running apocalypse timers and so on
 		ApocalypseManager.init();

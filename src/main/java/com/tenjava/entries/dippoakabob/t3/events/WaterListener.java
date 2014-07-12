@@ -16,13 +16,9 @@ public class WaterListener implements Listener {
 
 	@EventHandler
 	public void onWaterPlace(PlayerBucketEmptyEvent event) {
-
-		if (event.getItemStack().getType() == Material.WATER_BUCKET) {
-
-			if (TenJava.getRandom().nextInt(DESPAWN_CHANCE) == 0) {
-				event.getBlockClicked().setType(Material.AIR);
-				event.setItemStack(new ItemStack(Material.BUCKET));
-			}
+		if (TenJava.getRandom().nextInt(DESPAWN_CHANCE) == 0) {
+			event.getBlockClicked().setType(Material.AIR);
+			event.setItemStack(new ItemStack(Material.BUCKET));
 		}
 	}
 
