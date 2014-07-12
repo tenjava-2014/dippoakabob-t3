@@ -12,7 +12,7 @@ import org.bukkit.scheduler.BukkitRunnable;
  */
 public class MobSpawning extends ApocalypseEvent {
 
-	private static final int MOB_CHANCE = 400;
+	private static final int MOB_CHANCE = 800;
 
 	public MobSpawning() {
 		super("Mob Spawning", "Handles extra mob spawning.");
@@ -23,7 +23,7 @@ public class MobSpawning extends ApocalypseEvent {
 
 		new BukkitRunnable() {
 
-			Class<? extends Entity>[] types = new Class[]{CaveSpider.class, Skeleton.class, Creeper.class, PigZombie.class};
+			Class<? extends Entity>[] types = new Class[]{Skeleton.class, Creeper.class, Zombie.class, PigZombie.class};
 
 			@Override
 			public void run() {
@@ -38,7 +38,7 @@ public class MobSpawning extends ApocalypseEvent {
 					}
 				}
 			}
-		}.runTaskTimer(TenJava.getInstance(), 0L, 100L);
+		}.runTaskTimer(TenJava.getInstance(), 0L, 400L);
 
 	}
 }

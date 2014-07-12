@@ -30,11 +30,11 @@ public class ApocalypseManager {
 	private static boolean hasJoined = false;
 
 	/**
-	 * Starts timers and such for playing events.
+	 * Begins timers and initializes variables used for the Apocalypse
 	 */
 	public static void init() {
 
-		days = TenJava.getRandom().nextInt(2) + 1;
+		days = 1;
 		startingTicks = days * 24000;
 
 		new BukkitRunnable() {
@@ -59,7 +59,10 @@ public class ApocalypseManager {
 		}.runTaskTimer(TenJava.getInstance(), 0, 20);
 	}
 
-	public static void startApocalypse() {
+	/**
+	 * Starts the Apocalypse
+	 */
+	private static void startApocalypse() {
 		startLocation = generateStartLocation();
 
 		started = true;
@@ -89,6 +92,9 @@ public class ApocalypseManager {
 		}.runTaskTimer(TenJava.getInstance(), 0, 20);
 	}
 
+	/**
+	 * Starts a random event in the Apocalypse
+	 */
 	private static void playRandomEvent() {
 		ApocalypseEvent event = getRandomEvent();
 
@@ -98,10 +104,21 @@ public class ApocalypseManager {
 		}
 	}
 
+	/**
+	 * Adds an event to the list of events.
+	 *
+	 * @param event the event that should be added
+	 */
 	public static void addEvent(ApocalypseEvent event) {
 		addEvent(event, false);
 	}
 
+	/**
+	 * Adds and event to the list of events
+	 *
+	 * @param event the event that should be added
+	 * @param isStatic whether or not the event is static
+	 */
 	public static void addEvent(ApocalypseEvent event, boolean isStatic) {
 		if (isStatic) {
 			staticEvents.add(event);
@@ -112,6 +129,11 @@ public class ApocalypseManager {
 		Bukkit.getPluginManager().registerEvents(event, TenJava.getInstance());
 	}
 
+	/**
+	 * Get a Random ApocalypseEvent
+	 *
+	 * @return a random (non-static) ApocalypseEvent
+	 */
 	private static ApocalypseEvent getRandomEvent() {
 		int total = 0;
 
@@ -132,6 +154,11 @@ public class ApocalypseManager {
 		return null;
 	}
 
+	/**
+	 * Create an apocalypse start location
+	 *
+	 * @return a location where the Apocalypse should start
+	 */
 	public static Location generateStartLocation() {
 		Location loc;
 
@@ -144,34 +171,67 @@ public class ApocalypseManager {
 		return loc.getBlock().getLocation();
 	}
 
+	/**
+	 * Get ticks remaining until the Apocalypse starts
+	 *
+	 * @return the amount of ticks until the Apocalypse starts
+	 */
 	public static Long getTicksRemaining() {
 		return startingTicks - ticksElapsed;
 	}
 
+	/**
+	 * Get ApocalypseEvents
+	 *
+	 * @return a list of non-static events that will be used throughout the Apocalypse
+	 */
 	public static List<ApocalypseEvent> getEvents() {
 		return events;
 	}
 
+	/**
+	 * Get Static ApocalypseEvents
+	 *
+	 * @return a list of the static Apcoalypse events, ran at the start of the Apocalypse
+	 */
 	public static List<ApocalypseEvent> getStaticEvents() {
 		return staticEvents;
 	}
 
+	/**
+	 * Get the total ticks needed to start the Apcoalypse
+	 * @return The amount of ticks that the server will start the apocalypse in.
+	 */
 	public static long getStartingTicks() {
 		return startingTicks;
 	}
 
+	/**
+	 * Starts the Apocalypse
+	 */
 	public static void start(){
 		started = true;
 	}
 
+	/**
+	 * Has started method
+	 * @return whether or not the Apocalypse has started.
+	 */
 	public static boolean hasStarted() {
 		return started;
 	}
 
+	/**
+	 * A method callled when a player joins, used for delaying the start of the apocalypse
+	 */
 	public static void playerJoined() {
 		hasJoined = true;
 	}
 
+	/**
+	 * Get radius
+	 * @return the current radius of the apocalypse
+	 */
 	public static int getRadius() {
 		return radius;
 	}

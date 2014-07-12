@@ -74,6 +74,7 @@ public class Terrain extends ApocalypseEvent {
 				//Loop through blocks slower to change top terrain type
 				if(grassRadius <= MAX_RADUIS){
 
+					//Loop through the area
 					for(int x = -grassRadius; x <= grassRadius; x++) {
 						for (int z = -grassRadius; z <= grassRadius; z++) {
 							for (int y = 0; y <= 256; y++) {
@@ -90,6 +91,7 @@ public class Terrain extends ApocalypseEvent {
 									if(TenJava.getRandom().nextInt(GRASS_CHANCE) == 0){
 										block.setType(Material.DIRT);
 
+										//Chance the data to make Pozdol and Dirt
 										if(TenJava.getRandom().nextBoolean()){
 											block.setData((byte) 0);
 										}else{
@@ -98,6 +100,7 @@ public class Terrain extends ApocalypseEvent {
 									}
 								}
 
+								//Change all tall grass to Dead tall grass
 								if(block.getType() == Material.LONG_GRASS){
 									if(TenJava.getRandom().nextInt(GRASS_CHANCE) == 0){
 										block.setData((byte) 0);

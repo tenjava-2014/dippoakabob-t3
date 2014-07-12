@@ -15,12 +15,22 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Random;
 
+/**
+ * created by dippoakabob
+ *
+ * This is the main class of the Apocalypse plugin,
+ * it handles the basic setup of the different components.
+ */
+
 public class TenJava extends JavaPlugin {
 
 	private static TenJava instance;
 
 	private static Random random = new Random();
 
+	/**
+	 * Registers events, adds Apocalypse events, and starts timers.
+	 */
 	public void onEnable() {
 		instance = this;
 
@@ -41,17 +51,14 @@ public class TenJava extends JavaPlugin {
 		ApocalypseManager.init();
 	}
 
-
-	public void onDisable() {
-
-	}
-
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+
+		//The start command: This allows for the apocalypse to be force-started
 		if (label.equalsIgnoreCase("start")) {
 			if (!ApocalypseManager.hasStarted()) {
 				sender.sendMessage("Starting the Apocalypse!");
-				ApocalypseManager.start();
+				ApocalypseManager.start();                                                                              //Starts the apocalypse
 			} else {
 				sender.sendMessage("The Apocalypse has already started.");
 			}
@@ -59,10 +66,20 @@ public class TenJava extends JavaPlugin {
 		return true;
 	}
 
+	/**
+	 * Getting the Random
+	 *
+	 * @return an instance of Random
+	 */
 	public static Random getRandom() {
 		return random;
 	}
 
+	/**
+	 * Get instance
+	 *
+	 * @return Instance of TenJava plugin
+	 */
 	public static TenJava getInstance() {
 		return instance;
 	}
