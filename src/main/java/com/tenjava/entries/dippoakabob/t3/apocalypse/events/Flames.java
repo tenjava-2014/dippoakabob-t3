@@ -2,6 +2,7 @@ package com.tenjava.entries.dippoakabob.t3.apocalypse.events;
 
 import com.tenjava.entries.dippoakabob.t3.TenJava;
 import com.tenjava.entries.dippoakabob.t3.apocalypse.ApocalypseEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
@@ -19,13 +20,18 @@ public class Flames extends ApocalypseEvent {
 	}
 
 	@Override
-	public void play(final Location location, final int radius) {
+	public void play(final Location location, int radius) {
+
+		Bukkit.getLogger().info("Started the Flame event: let's hope this works.");
 
 		new BukkitRunnable(){
+
+			int flameRaduis = 1;
+
 			@Override
 			public void run() {
-				for(int x = -radius; x < radius; x++ ){
-					for(int z = -radius; z < radius; z++ ){
+				for(int x = -flameRaduis; x < flameRaduis; x++ ){
+					for(int z = -flameRaduis; z < flameRaduis; z++ ){
 						Location loc = new Location(location.getWorld(),
 								location.getX() + x,
 								location.getY(),
@@ -36,8 +42,9 @@ public class Flames extends ApocalypseEvent {
 						}
 					}
 				}
+				flameRaduis += 1;
 			}
-		}.runTaskLater(TenJava.getInstance(), 20);
+		}.runTaskTimer(TenJava.getInstance(), 0, 20);
 
 	}
 }

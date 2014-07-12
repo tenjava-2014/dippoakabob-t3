@@ -26,10 +26,6 @@ public abstract class ApocalypseEvent {
 		this.rarity = rarity;
 	}
 
-	public boolean isStaticEvent(){
-		return rarity == 0;
-	}
-
 	public String getName(){
 		return name;
 	}

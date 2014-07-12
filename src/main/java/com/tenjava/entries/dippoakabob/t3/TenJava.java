@@ -20,7 +20,7 @@ public class TenJava extends JavaPlugin {
 		ApocalypseManager.addEvent(new Testing());
 
 		//Adding Static Apocalypse Events
-		ApocalypseManager.addEvent(new Flames());
+		ApocalypseManager.addEvent(new Flames(), true);
 
 		//Begin running apocalypse timers and so on
 		ApocalypseManager.init();
