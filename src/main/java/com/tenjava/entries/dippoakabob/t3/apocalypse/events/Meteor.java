@@ -13,6 +13,7 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -26,7 +27,7 @@ public class Meteor extends ApocalypseEvent {
 
 	Random random = TenJava.getRandom();
 
-	List<FallingBlock> blocks = new ArrayList<FallingBlock>();
+	HashMap<String, ArrayList<FallingBlock>> blocks = new HashMap<String, ArrayList<FallingBlock>>();
 
 	public Meteor() {
 		super("Meteor", "It starts raining flaming meteors!", 1);
@@ -45,19 +46,21 @@ public class Meteor extends ApocalypseEvent {
 			loc.add(randX, 0, randZ);
 			loc.setY(256);
 
-			spawnMeteor(loc);
+			spawnMeteor(loc, player.getName());
 
 		}
 
 	}
 
-	private void spawnMeteor(Location loc) {
+	private void spawnMeteor(Location loc, String name) {
 
 		double vecX = (random.nextDouble() * 2D - 1D);
 		double vecY = (random.nextDouble() * 2D - 1D);
 		double vecZ = (random.nextDouble() * 2D - 1D);
 
 		Vector vector = new Vector(vecX, vecY, vecZ).normalize();
+
+
 
 		for(int x = -METEOR_RADIUS; x <= METEOR_RADIUS; x++){
 			for(int y = -METEOR_RADIUS; y <= METEOR_RADIUS; y++){
@@ -68,7 +71,12 @@ public class Meteor extends ApocalypseEvent {
 					if(blockLoc.distanceSquared(loc) <= METEOR_RADIUS * METEOR_RADIUS){
 						FallingBlock block = loc.getWorld().spawnFallingBlock(blockLoc, (random.nextBoolean() ? Material.NETHERRACK : Material.SOUL_SAND), (byte) 0);
 						block.setVelocity(vector);
-						blocks.add(block);
+						block.setDropItem(false);
+						block.setFireTicks(Integer.MAX_VALUE);
+						if(!blocks.containsKey(name)){
+							blocks.put(name, new ArrayList<FallingBlock>());
+						}
+						blocks.get(name).add(block);
 					}
 				}
 			}
@@ -80,7 +88,17 @@ public class Meteor extends ApocalypseEvent {
 		if(event.getEntity().getType() == EntityType.FALLING_BLOCK){
 			event.setCancelled(true);
 
-			event.getBlock().getLocation().getWorld().createExplosion(event.getBlock().getLocation(), 5F, true);
+			if(event.getBlock().getType() == Material.AIR){
+				event.getBlock().getLocation().getWorld().createExplosion(event.getBlock().getLocation(), 5F, true);
+
+				for(String name : blocks.keySet()){
+					if(blocks.get(name).contains(event.getEntity())){
+						for(FallingBlock block : blocks.get(name)){
+							block.remove();
+						}
+					}
+				}
+			}
 
 		}
 	}

@@ -4,6 +4,7 @@ import com.tenjava.entries.dippoakabob.t3.TenJava;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -28,6 +29,9 @@ public class ApocalypseManager {
 	private static Location startLocation;
 	private static int days;
 	private static long startingTicks;
+	private static long ticksElapsed = 0;
+
+	private static boolean started = false;
 
 	/**
 	 * Starts timers and such for playing events.
@@ -41,21 +45,15 @@ public class ApocalypseManager {
 
 		new BukkitRunnable() {
 
-			long ticksElapsed = 0;
-
 			@Override
 			public void run() {
 				ticksElapsed += 20;
 				long remaining = startingTicks - ticksElapsed;
 
-				if(remaining <= 0){
+				if(remaining <= 0 || started){
 					startApocalypse();
 					this.cancel();
-				}else if(remaining == 20 //1 second
-						|| remaining == 40 //2 second
-						|| remaining == 60 //3 second
-						|| remaining == 80 //4 second
-						|| remaining == 100 //5 second
+				}else if((remaining <= 100 && remaining % 20 == 0) //5 second
 						|| remaining == 200 //10 second
 						|| remaining == 300){ //15 second
 					Bukkit.broadcastMessage(ChatColor.RED + "The apocalypse is starting in " + (remaining/20) + " second" + ((remaining/20 == 1) ? "":"s" + "!"));
@@ -67,7 +65,9 @@ public class ApocalypseManager {
 	}
 
 	public static void startApocalypse(){
-		startLocation = new Location(Bukkit.getWorlds().get(0), 0, 0, 0);
+		startLocation = generateStartLocation();
+
+		started = true;
 
 		TenJava.getInstance().getConfig().set("apocalypse.started", true);
 		TenJava.getInstance().saveConfig();
@@ -137,6 +137,22 @@ public class ApocalypseManager {
 		return null;
 	}
 
+	public static Location generateStartLocation(){
+		Location loc;
+
+		if(Bukkit.getOnlinePlayers().length > 0){
+			loc = Bukkit.getOnlinePlayers()[TenJava.getRandom().nextInt(Bukkit.getOnlinePlayers().length)].getLocation();
+
+		}else{
+			loc = Bukkit.getWorlds().get(0).getSpawnLocation();
+		}
+		return loc;
+	}
+
+	public static Long getTicksRemaining(){
+		return startingTicks - ticksElapsed;
+	}
+
 	public static List<ApocalypseEvent> getEvents(){
 		return events;
 	}
@@ -147,6 +163,10 @@ public class ApocalypseManager {
 
 	public static long getStartingTicks(){
 		return startingTicks;
+	}
+
+	public static boolean hasStarted(){
+		return started;
 	}
 
 }

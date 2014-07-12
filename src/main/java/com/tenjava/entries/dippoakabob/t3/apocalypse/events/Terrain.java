@@ -16,8 +16,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class Terrain extends ApocalypseEvent {
 
 	private static final int FLAME_AMOUNT = 12;
-	private static final int BORDER_RADIUS_CHANCE = 2;
-	private static final int GRASS_RADIUS_CHANCE = 5;
+	private static final int BORDER_RADIUS_CHANCE = 1;
+	private static final int GRASS_RADIUS_CHANCE = 3;
 	private static final int GRASS_CHANCE = 10;
 
 	private static final int MAX_RADUIS = 200;
@@ -42,13 +42,10 @@ public class Terrain extends ApocalypseEvent {
 				if(borderRadius <= MAX_RADUIS){
 					for(int x = -borderRadius; x <= borderRadius; x++) {
 						for (int z = -borderRadius; z <= borderRadius; z++) {
-							Location loc = new Location(location.getWorld(),
-									location.getX() + x,
-									location.getY(),
-									location.getZ() + z);
+							Location loc = location.clone().add(x, 0, z);
 
 							//Check blocks around boarder
-							if (Math.abs(loc.getX()) == location.getX() + borderRadius || Math.abs(loc.getZ()) == location.getZ() + borderRadius) {
+							if (Math.abs(loc.getX()) == Math.abs(location.getX() + borderRadius) || Math.abs(loc.getZ()) == Math.abs(location.getZ() + borderRadius)) {
 
 								// /Light things on fire
 								if(TenJava.getRandom().nextInt(FLAME_AMOUNT) == 0){
@@ -62,8 +59,8 @@ public class Terrain extends ApocalypseEvent {
 									waterloc.setY(y);
 
 									if (waterloc.getBlock().getType() == Material.WATER || waterloc.getBlock().getType() == Material.STATIONARY_WATER) {
-										waterloc.getBlock().setType(Material.AIR);
-										waterloc.getWorld().playSound(waterloc, Sound.FIZZ, 1, 1);
+										waterloc.getBlock().setType(Material.SAND);
+										waterloc.getBlock().setData((byte)(TenJava.getRandom().nextBoolean() ? 0:1));
 									}
 								}
 							}
@@ -104,7 +101,7 @@ public class Terrain extends ApocalypseEvent {
 						}
 					}
 					if(TenJava.getRandom().nextInt(GRASS_RADIUS_CHANCE) == 0){
-						grassRadius += 1;
+						grassRadius += 2;
 					}
 				}
 
