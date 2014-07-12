@@ -27,8 +27,6 @@ public class ApocalypseManager {
 	private static Location startLocation;
 	private static int days;
 
-	private static Random random = new Random();
-
 	/**
 	 * Starts timers and such for playing events.
 	 */
@@ -56,9 +54,12 @@ public class ApocalypseManager {
 			@Override
 			public void run() {
 
-				if(random.nextInt(EVENT_CHANCE) == 0){
+				if(TenJava.getRandom().nextInt(EVENT_CHANCE) == 0){
 					playRandomEvent();
 				}
+
+				//Expand the apocalypse radius
+				radius += 1;
 			}
 		}.runTaskTimer(TenJava.getInstance(), 0, 20);
 	}
@@ -88,7 +89,7 @@ public class ApocalypseManager {
 		}
 
 		if(total > 0){
-			int select = random.nextInt(total);
+			int select = TenJava.getRandom().nextInt(total);
 
 			for(ApocalypseEvent event : events){
 				select -= event.getRarity();

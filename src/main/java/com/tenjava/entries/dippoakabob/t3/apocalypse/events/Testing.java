@@ -1,4 +1,4 @@
-package com.tenjava.entries.dippoakabob.t3.apocalypse.types;
+package com.tenjava.entries.dippoakabob.t3.apocalypse.events;
 
 import com.tenjava.entries.dippoakabob.t3.apocalypse.ApocalypseEvent;
 import org.bukkit.Bukkit;

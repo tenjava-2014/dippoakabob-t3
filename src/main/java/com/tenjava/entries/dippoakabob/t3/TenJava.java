@@ -1,18 +1,26 @@
 package com.tenjava.entries.dippoakabob.t3;
 
 import com.tenjava.entries.dippoakabob.t3.apocalypse.ApocalypseManager;
-import com.tenjava.entries.dippoakabob.t3.apocalypse.types.Testing;
+import com.tenjava.entries.dippoakabob.t3.apocalypse.events.Flames;
+import com.tenjava.entries.dippoakabob.t3.apocalypse.events.Testing;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.Random;
 
 public class TenJava extends JavaPlugin {
 
 	private static TenJava instance;
 
+	private static Random random = new Random();
+
 	public void onEnable(){
 		instance = this;
 
-		//Adding Apocalypse Types
+		//Adding Apocalypse Events
 		ApocalypseManager.addEvent(new Testing());
+
+		//Adding Static Apocalypse Events
+		ApocalypseManager.addEvent(new Flames());
 
 		//Begin running apocalypse timers and so on
 		ApocalypseManager.init();
@@ -21,6 +29,10 @@ public class TenJava extends JavaPlugin {
 
 	public void onDisable(){
 
+	}
+
+	public static Random getRandom(){
+		return random;
 	}
 
 	public static TenJava getInstance(){
