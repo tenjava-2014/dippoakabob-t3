@@ -50,8 +50,9 @@ public class ApocalypseManager {
 						this.cancel();
 					} else if ((remaining <= 100 && remaining % 20 == 0) //5 second
 							|| remaining == 200 //10 second
-							|| remaining == 300){ //15 second
-						Bukkit.broadcastMessage(ChatColor.RED + "The apocalypse is starting in " + (remaining / 20) + " second" + ((remaining / 20 == 1) ? "" : "s" + "!"));
+							|| remaining == 300 //15 second
+							|| remaining % 1200 == 0){ //Minute
+						Bukkit.broadcastMessage(ChatColor.RED + "The apocalypse is starting in " + (remaining/1200) + " minute" + ((remaining / 20 == 1) ? " " : "s ") + (remaining%1200 / 20) + " second" + ((remaining / 20 == 1) ? "" : "s" + "!"));
 					}
 				}
 			}
