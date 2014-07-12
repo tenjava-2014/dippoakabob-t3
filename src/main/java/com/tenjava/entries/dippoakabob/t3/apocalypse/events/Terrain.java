@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -15,6 +16,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class Terrain extends ApocalypseEvent {
 
 	private static final int FLAME_AMOUNT = 3;
+	private static final int GRASS_RADIUS_CHANCE = 3;
+	private static final int GRASS_CHANCE = 10;
+
 	private static final int MAX_RADUIS = 200;
 
 	public Terrain() {
@@ -28,38 +32,77 @@ public class Terrain extends ApocalypseEvent {
 
 		new BukkitRunnable(){
 
-			int effectRaduis = 1;
+			int borderRadius = 1;
+			int grassRadius = 1;
 
 			@Override
 			public void run() {
-				for(int x = -effectRaduis; x <= effectRaduis; x++ ){
-					for(int z = -effectRaduis; z <= effectRaduis; z++ ){
-						Location loc = new Location(location.getWorld(),
+				//Looping through a boarder
+				if(borderRadius >= MAX_RADUIS){
+					for(int x = -borderRadius; x <= borderRadius; x++) {
+						for (int z = -borderRadius; z <= borderRadius; z++) {
+							Location loc = new Location(location.getWorld(),
+									location.getX() + x,
+									location.getY(),
+									location.getZ() + z);
+
+							//Check blocks around boarder
+							if (Math.abs(loc.getX()) == location.getX() + borderRadius || Math.abs(loc.getZ()) == location.getZ() + borderRadius) {
+
+								// /Light things on fire
+								if(TenJava.getRandom().nextInt(FLAME_AMOUNT) == 0){
+									loc.getWorld().getHighestBlockAt(loc).getRelative(BlockFace.UP).setType(Material.FIRE);
+								}
+
+								//Evaporate Water
+								Location waterloc = loc;
+
+								for (int y = 256; y >= 0; y--) {
+									waterloc.setY(y);
+
+									if (waterloc.getBlock().getType() == Material.WATER || waterloc.getBlock().getType() == Material.STATIONARY_WATER) {
+										waterloc.getBlock().setType(Material.AIR);
+										waterloc.getWorld().playSound(waterloc, Sound.FIZZ, 1, 1);
+									}
+								}
+							}
+						}
+					}
+					borderRadius += 1;
+				}
+
+				//Loop through blocks slower to change top terrain type
+				if(grassRadius >= MAX_RADUIS){
+
+					for(int x = -grassRadius; x <= grassRadius; x++) {
+						for (int z = -grassRadius; z <= grassRadius; z++) {
+							Location loc = new Location(location.getWorld(),
 								location.getX() + x,
 								location.getY(),
 								location.getZ() + z);
 
-						if(Math.abs(loc.getX()) == location.getX() + effectRaduis || Math.abs(loc.getZ()) == location.getZ() + effectRaduis){
-							//Light things on fire
-							loc.getWorld().getHighestBlockAt(loc).getRelative(BlockFace.UP).setType(Material.FIRE);
+							Block block = loc.getWorld().getHighestBlockAt(loc);
 
-							//Evaporate Water
-							Location waterloc = loc;
-							for(int y = 256; y >= 0; y++){
-								waterloc.setY(y);
-								if(waterloc.getBlock().getType() == Material.WATER || waterloc.getBlock().getType() == Material.STATIONARY_WATER){
-									waterloc.getBlock().setType(Material.AIR);
-									waterloc.getWorld().playSound(waterloc, Sound.FIZZ, 1, 1);
+							if(block.getType() == Material.GRASS){
+
+								//Don't change all the blocks, just a random amount
+								if(TenJava.getRandom().nextInt(GRASS_CHANCE) == 0){
+									block.setType(Material.DIRT);
+
+									if(TenJava.getRandom().nextBoolean()){
+										block.setData((byte) 0);
+									}else{
+										block.setData((byte) 2);
+									}
 								}
 							}
 						}
 					}
 				}
-				effectRaduis += 1;
-
-				if(effectRaduis >= MAX_RADUIS){
-					this.cancel();
+				if(TenJava.getRandom().nextInt(GRASS_RADIUS_CHANCE) == 0){
+					grassRadius += 1;
 				}
+
 			}
 		}.runTaskTimer(TenJava.getInstance(), 0, 20);
 
