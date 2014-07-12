@@ -3,6 +3,7 @@ package com.tenjava.entries.dippoakabob.t3.apocalypse.events;
 import com.tenjava.entries.dippoakabob.t3.TenJava;
 import com.tenjava.entries.dippoakabob.t3.apocalypse.ApocalypseEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -36,6 +37,8 @@ public class Meteor extends ApocalypseEvent {
 	@Override
 	public void play(Location location, int radius) {
 
+		Bukkit.broadcastMessage(ChatColor.RED + "Meteors incoming!");
+
 		for(Player player : Bukkit.getOnlinePlayers()){
 
 			Location loc = player.getLocation();
@@ -59,8 +62,6 @@ public class Meteor extends ApocalypseEvent {
 		double vecZ = (random.nextDouble() * 2D - 1D);
 
 		Vector vector = new Vector(vecX, vecY, vecZ).normalize();
-
-
 
 		for(int x = -METEOR_RADIUS; x <= METEOR_RADIUS; x++){
 			for(int y = -METEOR_RADIUS; y <= METEOR_RADIUS; y++){
@@ -89,7 +90,7 @@ public class Meteor extends ApocalypseEvent {
 			event.setCancelled(true);
 
 			if(event.getBlock().getType() == Material.AIR){
-				event.getBlock().getLocation().getWorld().createExplosion(event.getBlock().getLocation(), 5F, true);
+				event.getBlock().getLocation().getWorld().createExplosion(event.getBlock().getLocation(), 8F, true);
 
 				for(String name : blocks.keySet()){
 					if(blocks.get(name).contains(event.getEntity())){

@@ -4,14 +4,10 @@ import com.tenjava.entries.dippoakabob.t3.TenJava;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by dippoakabob.
@@ -32,6 +28,8 @@ public class ApocalypseManager {
 	private static long ticksElapsed = 0;
 
 	private static boolean started = false;
+
+	private static boolean hasJoined = false;
 
 	/**
 	 * Starts timers and such for playing events.
@@ -72,8 +70,7 @@ public class ApocalypseManager {
 		TenJava.getInstance().getConfig().set("apocalypse.started", true);
 		TenJava.getInstance().saveConfig();
 
-		Bukkit.broadcastMessage(ChatColor.DARK_RED + "Starting the Apocalypse!");
-		Bukkit.broadcastMessage(ChatColor.RED + "Starting at " + startLocation.getX() + "x " + startLocation.getZ() + "z");
+		Bukkit.broadcastMessage(ChatColor.RED + "The Apocalypse has begun!");
 
 		for(ApocalypseEvent staticEvent : staticEvents){
 			staticEvent.play(startLocation, radius);
@@ -146,7 +143,7 @@ public class ApocalypseManager {
 		}else{
 			loc = Bukkit.getWorlds().get(0).getSpawnLocation();
 		}
-		return loc;
+		return loc.getBlock().getLocation();
 	}
 
 	public static Long getTicksRemaining(){
@@ -167,6 +164,10 @@ public class ApocalypseManager {
 
 	public static boolean hasStarted(){
 		return started;
+	}
+
+	public static void playerJoined(){
+		hasJoined = true;
 	}
 
 }

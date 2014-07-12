@@ -19,6 +19,7 @@ public class Terrain extends ApocalypseEvent {
 	private static final int BORDER_RADIUS_CHANCE = 1;
 	private static final int GRASS_RADIUS_CHANCE = 3;
 	private static final int GRASS_CHANCE = 10;
+	private static final int MONSTER_CHANCE = 30;
 
 	private static final int MAX_RADUIS = 200;
 
@@ -42,12 +43,11 @@ public class Terrain extends ApocalypseEvent {
 				if(borderRadius <= MAX_RADUIS){
 					for(int x = -borderRadius; x <= borderRadius; x++) {
 						for (int z = -borderRadius; z <= borderRadius; z++) {
-							Location loc = location.clone().add(x, 0, z);
-
 							//Check blocks around boarder
-							if (Math.abs(loc.getX()) == Math.abs(location.getX() + borderRadius) || Math.abs(loc.getZ()) == Math.abs(location.getZ() + borderRadius)) {
+							if(Math.abs(x) == borderRadius || Math.abs(z) == borderRadius) {
+								Location loc = location.clone().add(x, 0, z);
 
-								// /Light things on fire
+								//Light things on fire
 								if(TenJava.getRandom().nextInt(FLAME_AMOUNT) == 0){
 									loc.getWorld().getHighestBlockAt(loc).getRelative(BlockFace.UP).setType(Material.FIRE);
 								}
@@ -95,6 +95,12 @@ public class Terrain extends ApocalypseEvent {
 										}else{
 											block.setData((byte) 2);
 										}
+									}
+								}
+
+								if(block.getType() == Material.LONG_GRASS){
+									if(TenJava.getRandom().nextInt(GRASS_CHANCE) == 0){
+										block.setData((byte) 0);
 									}
 								}
 							}

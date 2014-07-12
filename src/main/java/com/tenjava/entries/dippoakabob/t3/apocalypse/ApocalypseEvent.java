@@ -1,7 +1,10 @@
 package com.tenjava.entries.dippoakabob.t3.apocalypse;
 
+import com.tenjava.entries.dippoakabob.t3.TenJava;
 import org.bukkit.Location;
 import org.bukkit.event.Listener;
+
+import java.util.Random;
 
 /**
  * Created by dippoakabob.

@@ -1,9 +1,11 @@
 package com.tenjava.entries.dippoakabob.t3;
 
 import com.tenjava.entries.dippoakabob.t3.apocalypse.ApocalypseManager;
+import com.tenjava.entries.dippoakabob.t3.apocalypse.events.Lightning;
 import com.tenjava.entries.dippoakabob.t3.apocalypse.events.Meteor;
 import com.tenjava.entries.dippoakabob.t3.apocalypse.events.Terrain;
 import com.tenjava.entries.dippoakabob.t3.events.JoinLeaveListeners;
+import com.tenjava.entries.dippoakabob.t3.events.WaterListener;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -22,9 +24,11 @@ public class TenJava extends JavaPlugin {
 		//Register Events
 		PluginManager pm = Bukkit.getPluginManager();
 		pm.registerEvents(new JoinLeaveListeners(), this);
+		pm.registerEvents(new WaterListener(), this);
 
 		//Adding Apocalypse Events
 		ApocalypseManager.addEvent(new Meteor());
+		ApocalypseManager.addEvent(new Lightning());
 
 		//Adding Static Apocalypse Events
 		ApocalypseManager.addEvent(new Terrain(), true);
