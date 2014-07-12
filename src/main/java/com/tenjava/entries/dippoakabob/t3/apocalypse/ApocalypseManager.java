@@ -172,4 +172,8 @@ public class ApocalypseManager {
 		hasJoined = true;
 	}
 
+	public static int getRadius() {
+		return radius;
+	}
+
 }

@@ -31,7 +31,6 @@ public class JoinLeaveListeners implements Listener {
 
 		Player player = event.getPlayer();
 
-		player.sendMessage(ChatColor.DARK_GRAY + "" + ChatColor.STRIKETHROUGH + "-------------------------------");
 		player.sendMessage(ChatColor.YELLOW + joinMessages[TenJava.getRandom().nextInt(joinMessages.length)] + "\n ");
 
 		if(ApocalypseManager.hasStarted()){
@@ -47,7 +46,6 @@ public class JoinLeaveListeners implements Listener {
 					"  We need as much as we can get!");
 		}
 		player.sendMessage(ChatColor.AQUA + "\n  Good Luck!");
-		player.sendMessage(ChatColor.DARK_GRAY + "" + ChatColor.STRIKETHROUGH + "-------------------------------");
 
 	}
 

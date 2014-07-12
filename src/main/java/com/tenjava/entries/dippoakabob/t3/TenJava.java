@@ -4,6 +4,7 @@ import com.tenjava.entries.dippoakabob.t3.apocalypse.ApocalypseManager;
 import com.tenjava.entries.dippoakabob.t3.apocalypse.commands.StartCommand;
 import com.tenjava.entries.dippoakabob.t3.apocalypse.events.Lightning;
 import com.tenjava.entries.dippoakabob.t3.apocalypse.events.Meteor;
+import com.tenjava.entries.dippoakabob.t3.apocalypse.events.MobSpawning;
 import com.tenjava.entries.dippoakabob.t3.apocalypse.events.Terrain;
 import com.tenjava.entries.dippoakabob.t3.events.JoinLeaveListeners;
 import com.tenjava.entries.dippoakabob.t3.events.WaterListener;
@@ -33,6 +34,7 @@ public class TenJava extends JavaPlugin {
 
 		//Adding Static Apocalypse Events
 		ApocalypseManager.addEvent(new Terrain(), true);
+		ApocalypseManager.addEvent(new MobSpawning(), true);
 
 		//Commands
 		getCommand("start").setExecutor(new StartCommand());

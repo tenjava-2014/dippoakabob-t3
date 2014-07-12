@@ -1,6 +1,7 @@
 package com.tenjava.entries.dippoakabob.t3.events;
 
 import com.tenjava.entries.dippoakabob.t3.TenJava;
+import com.tenjava.entries.dippoakabob.t3.apocalypse.ApocalypseManager;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,9 +17,11 @@ public class WaterListener implements Listener {
 
 	@EventHandler
 	public void onWaterPlace(PlayerBucketEmptyEvent event) {
-		if (TenJava.getRandom().nextInt(DESPAWN_CHANCE) == 0) {
-			event.getBlockClicked().setType(Material.AIR);
-			event.setItemStack(new ItemStack(Material.BUCKET));
+		if(ApocalypseManager.hasStarted()){
+			if (TenJava.getRandom().nextInt(DESPAWN_CHANCE) == 0) {
+				event.getBlockClicked().getRelative(event.getBlockFace()).setType(Material.AIR);
+				event.setItemStack(new ItemStack(Material.BUCKET));
+			}
 		}
 	}
 
