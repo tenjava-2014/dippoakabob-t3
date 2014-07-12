@@ -28,7 +28,7 @@
 	</dependencies>
 
 	<build>
-		<defaultGoal>package</defaultGoal>
+		<defaultGoal>clean package</defaultGoal>
 		<finalName>${project.artifactId}</finalName>
 		<plugins>
 			<plugin>
@@ -40,8 +40,6 @@
 					     "1.6" to "1.7" or "1.8" if you wish. This will not impact your score. -->
 					<source>1.6</source>
 					<target>1.6</target>
-					<complianceLevel>1.6</complianceLevel>
-					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -54,6 +52,7 @@
 					<include>*</include>
 				</includes>
 			</resource>
+			<!-- Uncomment to include files (example is LICENSE file) from the project root
 			<resource>
 				<targetPath>.</targetPath>
 				<directory>${basedir}</directory>
@@ -61,6 +60,7 @@
 					<include>LICENSE</include>
 				</includes>
 			</resource>
+			-->
 		</resources>
 	</build>
 </project>
